@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Week 8 Best Bets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 30px;
+        }
+        
+        .container {
+            max-width: 428px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(180deg, #1c1c1e 0%, #000000 100%);
+            padding: 50px 20px 20px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 24px 0 12px 0;
+            color: #0a84ff;
+        }
+        
+        .bet-card {
+            background: #1c1c1e;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .bet-card.best {
+            background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+            border-color: #34c759;
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.3);
+        }
+        
+        .bet-card.value {
+            background: linear-gradient(135deg, #0a84ff 0%, #0040dd 100%);
+            border-color: #0a84ff;
+            box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
+        }
+        
+        .bet-card.risky {
+            background: linear-gradient(135deg, #ff9f0a 0%, #ff6b00 100%);
+            border-color: #ff9f0a;
+            box-shadow: 0 4px 16px rgba(255, 159, 10, 0.3);
+        }
+        
+        .bet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .bet-teams {
+            flex: 1;
+        }
+        
+        .bet-matchup {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+        
+        .bet-time {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+        }
+        
+        .confidence-badge {
+            background: rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        .bet-pick {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .bet-reason {
+            font-size: 14px;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+        }
+        
+        .prop-card {
+            background: #1c1c1e;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .prop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .prop-player {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        
+        .prop-team {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+        }
+        
+        .prop-badge {
+            background: rgba(10, 132, 255, 0.2);
+            color: #0a84ff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .prop-pick {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.2px;
+        }
+        
+        .prop-stats {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.3;
+            font-weight: 500;
+        }
+        
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 24px 0;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .green { background: #34c759; }
+        .blue { background: #0a84ff; }
+        .orange { background: #ff9f0a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Week 8 Bets</h1>
+            <p>Best picks & player props</p>
+        </div>
+
+        <div class="content">
+            <div class="section-title">🔥 Best Bets</div>
+            
+            <div class="bet-card best">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Patriots -7 vs Browns</div>
+                        <div class="bet-time">Sun 1:00 PM</div>
+                    </div>
+                    <div class="confidence-badge">85%</div>
+                </div>
+                <div class="bet-pick">Patriots -7 ✅</div>
+                <div class="bet-reason">Patriots 5th in scoring defense (18.7 PPG) vs Browns 31st in offense (15.2 PPG). Browns have -7 TO margin.</div>
+            </div>
+
+            <div class="bet-card best">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Eagles -10 vs Giants</div>
+                        <div class="bet-time">Sun 1:00 PM</div>
+                    </div>
+                    <div class="confidence-badge">85%</div>
+                </div>
+                <div class="bet-pick">Eagles -10 ✅</div>
+                <div class="bet-reason">Saquon Barkley revenge game (leads NFL with 897 rush yds). Eagles #1 rush offense vs Giants allowing 26 sacks.</div>
+            </div>
+
+            <div class="bet-card best">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Colts -8.5 vs Titans</div>
+                        <div class="bet-time">Sun 4:25 PM</div>
+                    </div>
+                    <div class="confidence-badge">83%</div>
+                </div>
+                <div class="bet-pick">Colts -8.5 ✅</div>
+                <div class="bet-reason">Colts 6-1 with +9 TO margin. Titans 1-6 with -8 TO margin, scoring just 16.8 PPG (30th).</div>
+            </div>
+
+            <div class="section-title">💎 Value Plays</div>
+
+            <div class="bet-card value">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Bengals -5.5 vs Jets</div>
+                        <div class="bet-time">Sun 1:00 PM</div>
+                    </div>
+                    <div class="confidence-badge">80%</div>
+                </div>
+                <div class="bet-pick">Bengals -5.5 ✅</div>
+                <div class="bet-reason">Burrow has 18 TDs. Jets 27th in scoring (18.4 PPG), allowing 23 sacks with -4 TO margin.</div>
+            </div>
+
+            <div class="bet-card value">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Broncos -4 vs Cowboys</div>
+                        <div class="bet-time">Sun 4:25 PM</div>
+                    </div>
+                    <div class="confidence-badge">78%</div>
+                </div>
+                <div class="bet-pick">Broncos -4 ✅</div>
+                <div class="bet-reason">Denver 3rd in scoring defense (17.6 PPG), 26 sacks. Mile High altitude advantage vs struggling Cowboys.</div>
+            </div>
+
+            <div class="bet-card value">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Chiefs -6.5 vs Commanders</div>
+                        <div class="bet-time">Mon 8:15 PM</div>
+                    </div>
+                    <div class="confidence-badge">77%</div>
+                </div>
+                <div class="bet-pick">Chiefs -6.5 ✅</div>
+                <div class="bet-reason">Mahomes at Arrowhead on 2-game win streak. Chiefs +8 TO margin. Rookie QB Jayden Daniels in tough road test.</div>
+            </div>
+
+            <div class="bet-card value">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Bills -4.5 @ Panthers</div>
+                        <div class="bet-time">Sun 1:00 PM</div>
+                    </div>
+                    <div class="confidence-badge">76%</div>
+                </div>
+                <div class="bet-pick">Bills -4.5 ✅</div>
+                <div class="bet-reason">Josh Allen leads NFL with 20 total TDs. Bills lead NFL with 31 sacks. Panthers allow 24.3 PPG.</div>
+            </div>
+
+            <div class="section-title">🎲 High Risk/Reward</div>
+
+            <div class="bet-card risky">
+                <div class="bet-header">
+                    <div class="bet-teams">
+                        <div class="bet-matchup">Packers +2.5 @ Steelers</div>
+                        <div class="bet-time">Sun 8:20 PM</div>
+                    </div>
+                    <div class="confidence-badge">62%</div>
+                </div>
+                <div class="bet-pick">Packers +2.5 🎰</div>
+                <div class="bet-reason">Jordan Love (14 TDs) vs Rodgers facing former team. Packers average 26.3 PPG. Emotional SNF game.</div>
+            </div>
+
+            <div class="section-title">🏈 Top Player Props</div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Josh Allen</div>
+                        <div class="prop-team">Bills QB</div>
+                    </div>
+                    <div class="prop-badge">Hot</div>
+                </div>
+                <div class="prop-pick">Over 2.5 Total TDs</div>
+                <div class="prop-stats">Leads NFL with 20 total TDs (17 pass, 3 rush). Panthers allow 24.3 PPG.</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Saquon Barkley</div>
+                        <div class="prop-team">Eagles RB</div>
+                    </div>
+                    <div class="prop-badge">Revenge</div>
+                </div>
+                <div class="prop-pick">Over 119.5 Rush Yards</div>
+                <div class="prop-stats">Leads NFL with 897 rush yards (128 YPG). Facing former team Giants. Eagles #1 rush offense.</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Joe Burrow</div>
+                        <div class="prop-team">Bengals QB</div>
+                    </div>
+                    <div class="prop-badge">Value</div>
+                </div>
+                <div class="prop-pick">Over 1.5 Pass TDs</div>
+                <div class="prop-stats">Has 18 TDs on season, averaging 289 pass YPG (2nd). Jets allow 248 pass YPG (21st).</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Patrick Mahomes</div>
+                        <div class="prop-team">Chiefs QB</div>
+                    </div>
+                    <div class="prop-badge">Prime</div>
+                </div>
+                <div class="prop-pick">Over 274.5 Pass Yards</div>
+                <div class="prop-stats">Chiefs at home on MNF. 15 TDs this season, +8 TO margin. Commanders allow 235 pass YPG.</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Lamar Jackson</div>
+                        <div class="prop-team">Ravens QB</div>
+                    </div>
+                    <div class="prop-badge">Dual</div>
+                </div>
+                <div class="prop-pick">Over 44.5 Rush Yards</div>
+                <div class="prop-stats">Has 487 rush yards this season. Ravens #2 rush offense (171 YPG). Bears allow 118 rush YPG.</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">Baker Mayfield</div>
+                        <div class="prop-team">Bucs QB</div>
+                    </div>
+                    <div class="prop-badge">Smash</div>
+                </div>
+                <div class="prop-pick">Over 1.5 Pass TDs</div>
+                <div class="prop-stats">16 TDs on season, 264 pass YPG. Saints 26th in pass defense, allowing 261 YPG.</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">CJ Stroud</div>
+                        <div class="prop-team">Texans QB</div>
+                    </div>
+                    <div class="prop-badge">Safe</div>
+                </div>
+                <div class="prop-pick">Over 249.5 Pass Yards</div>
+                <div class="prop-stats">Texans 5-2, strong home team. 49ers allowing pass yards. Close game expected (HOU -1.5).</div>
+            </div>
+
+            <div class="prop-card">
+                <div class="prop-header">
+                    <div>
+                        <div class="prop-player">James Cook</div>
+                        <div class="prop-team">Bills RB</div>
+                    </div>
+                    <div class="prop-badge">Boom</div>
+                </div>
+                <div class="prop-pick">Over 64.5 Rush Yards</div>
+                <div class="prop-stats">Averaging 5.1 YPC. Panthers allow 4.3 YPC (17th). Bills favored, should run the ball.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot green"></div>
+                    <span>Best Bet (80%+)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot blue"></div>
+                    <span>Value Play (70-79%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot orange"></div>
+                    <span>High Risk (&lt;70%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
